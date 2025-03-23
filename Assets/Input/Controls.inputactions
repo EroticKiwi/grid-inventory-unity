@@ -1,0 +1,130 @@
+{
+    "name": "Controls",
+    "maps": [
+        {
+            "name": "Movement",
+            "id": "786af874-4988-4bad-9f50-66c1de11a51b",
+            "actions": [
+                {
+                    "name": "Horizontal",
+                    "type": "Button",
+                    "id": "98f7dff3-e4dc-42d6-923e-6889e5031915",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Vertical",
+                    "type": "Button",
+                    "id": "63c1a8b1-1493-4ece-a18d-ad721336e1ca",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Select",
+                    "type": "Button",
+                    "id": "5f963dd9-8d5f-44af-a2a9-4e7f0517d3a2",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "1D Axis",
+                    "id": "e8c881e2-6a23-4ba0-9512-2f5f19640110",
+                    "path": "1DAxis(whichSideWins=1)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Horizontal",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "aa3f21f0-cbbe-4501-a03f-fee051b04992",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Horizontal",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "eea28017-1301-43c7-9a0a-972d023c025c",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Horizontal",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "7857adab-2b53-4c0b-bace-20d1bb877acd",
+                    "path": "1DAxis(whichSideWins=1)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Vertical",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "92e6fb5f-ee67-4ee0-b446-a3de124256d0",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Vertical",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "edc7c513-a4fb-4c6d-843c-04c8c30bc731",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Vertical",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "fa46894d-ba96-4327-9cbc-ac41556a9f25",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "Keyboard",
+            "bindingGroup": "Keyboard",
+            "devices": [
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}
