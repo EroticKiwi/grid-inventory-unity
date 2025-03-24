@@ -22,8 +22,8 @@ public class ArtificialGrid : MonoBehaviour
     public float xStart;
     public float yStart;
 
-    float gridSpacingX = 10f;
-    float gridSpacingY = 20f;
+    //float gridSpacingX = 10f;
+    //float gridSpacingY = 20f;
 
     private void Awake()
     {
@@ -62,7 +62,7 @@ public class ArtificialGrid : MonoBehaviour
         _cellManager.SetFirstCell(grid[0, 0].GetComponent<GridCell>());
     }
 
-    public void CreateCellGroup(List<Tuple<int,int>> coordinates, string name, GameObject go)
+    public void CreateCellGroup(List<Tuple<int,int>> coordinates, string name, GameObject go, Grid_Item item)
     {
         List<GridCell> cells = new List<GridCell>();
         Vector3 position = Vector3.zero;
@@ -78,9 +78,14 @@ public class ArtificialGrid : MonoBehaviour
 
         GameObject cellGO = Instantiate(go, position, Quaternion.identity, imageParent);
 
-        CellGroup newCellGroup = new CellGroup(name, coordinates, cells, cellGO);
+        CellGroup newCellGroup = new CellGroup(name, coordinates, cells, cellGO, item);
 
         cellGroups.Add(newCellGroup);
+    } // Debug
+
+    public void FillCell(Grid_Item item) // Debug
+    {
+        grid[0,0].GetComponent<GridCell>().FillCell(item);
     }
 
     public List<GameObject> CheckForCollisions(Vector2 startPos, Vector2 endPos)

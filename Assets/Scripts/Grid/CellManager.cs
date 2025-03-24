@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,11 +11,20 @@ public class CellManager : MonoBehaviour
     SelectionCellGroup currentCellGroup;
     SelectionCellGroup previousCellGroup;
 
+    SelectionCellGroup backupCellGroup;
+    
+
     bool isSelecting = false;
+
+    public SelectionGO selectionGO_one;
+    public GameObject selectionGO_oneprefab;
+
+    public SelectionGO selectionGO_two;
 
     public GameObject doubleGrid;
     public Grid_Item medspray;
     public GameObject prefab;
+    public Grid_Item firstCellItemDebug;
 
     private void Awake()
     {
@@ -24,14 +35,21 @@ public class CellManager : MonoBehaviour
     {
         currentCellGroup = new SelectionCellGroup();
         previousCellGroup = new SelectionCellGroup();
+        backupCellGroup = new SelectionCellGroup();
     }
 
     public void SetFirstCell(GridCell firstCell)
     {
         currentCellGroup.AssignCell(firstCell);
-        currentCellGroup.FocusCell();
+        currentCellGroup.FocusCell(true);
 
         CreateDebugCellGroup();
+        FillCell();
+    }
+
+    void FillCell() // Debug
+    {
+        ArtificialGrid.Instance.FillCell(firstCellItemDebug);
     }
 
     void CreateDebugCellGroup() // Debug
@@ -41,7 +59,7 @@ public class CellManager : MonoBehaviour
         tuple.Add(Tuple.Create(0, 1));
         tuple.Add(Tuple.Create(0, 2));
 
-        ArtificialGrid.Instance.CreateCellGroup(tuple, "medspray", doubleGrid);
+        ArtificialGrid.Instance.CreateCellGroup(tuple, "medspray", doubleGrid, medspray);
     }
 
     public void NextCell(Vector2 direction)
@@ -77,24 +95,103 @@ public class CellManager : MonoBehaviour
 
     void AssignCurrentCells(GameObject hit)
     {
+        bool color = true;
         GridCell cell = hit.GetComponent<GridCell>();
-        
+
+        if (isSelecting)
+        {
+            color = false;
+        }
+
         if (cell != null && cell.isPartOfCellGroup)
         {
             currentCellGroup.AssignCell(null);
             currentCellGroup.AssignCellGroup(cell.owner);
-            currentCellGroup.FocusCellGroup();
+            currentCellGroup.FocusCellGroup(color);
             return;
         }
 
         currentCellGroup.AssignCell(cell);
         currentCellGroup.AssignCellGroup(null);
-        currentCellGroup.FocusCell();
+        currentCellGroup.FocusCell(color);
+        if (isSelecting)
+        {
+            selectionGO_one.SetPosition(currentCellGroup.GetCellTransform().position);
+        }
     }
 
-    void SelectCells()
+    public void SelectCells_Input()
     {
-        
+        if (!isSelecting) // Is NOW selecting
+        {
+            if (currentCellGroup.isEmpty)
+            {
+                Debug.Log("isEmpty!");
+                return;
+            }
+
+            if (currentCellGroup.GetCellGroup() == null)
+            {
+                SelectCell_One();
+            }
+            else
+            {
+                //SelectCell_Two();
+                //selectionGO.SetItem(currentCellGroup.GetCellGroup().GetItem());
+            }
+            isSelecting = true;
+            return;
+        }
+
+        if (currentCellGroup.isEmpty)
+        {
+            currentCellGroup.FillCell(selectionGO_one.storedItem);
+            currentCellGroup.FocusCell(true);
+            selectionGO_one.Empty();
+            isSelecting = false;
+            return;
+        }
+
+        SwapCells();
+        isSelecting = false;
+    }
+
+    void SwapCells()
+    {
+        Grid_Item tempItem = currentCellGroup.GetItem();
+        currentCellGroup.FillCell(selectionGO_one.storedItem);
+        selectionGO_one.storedItem = tempItem;
+    }
+
+    void SelectCell_One()
+    {
+        if (selectionGO_one == null)
+        {
+            GameObject go = Instantiate(selectionGO_oneprefab, GameObject.FindWithTag("InventoryGrid").transform);
+            selectionGO_one = new SelectionGO(go);
+        }
+
+        currentCellGroup.UnFocusCell();
+        selectionGO_one.SetItem(currentCellGroup.SelectCell());
+        selectionGO_one.SetPosition(currentCellGroup.GetCellTransform().position);
+        BackupCellGroup();
+        currentCellGroup.EmptyCells();
+    }
+
+    void BackupCellGroup()
+    {
+        GridCell cell = currentCellGroup.GetCell();
+        if (cell != null && cell.isPartOfCellGroup)
+        {
+            backupCellGroup.AssignCell(null);
+            backupCellGroup.AssignCellGroup(cell.owner);
+            backupCellGroup.FocusCellGroup(false);
+            return;
+        }
+
+        backupCellGroup.AssignCell(cell);
+        backupCellGroup.AssignCellGroup(null);
+        backupCellGroup.FocusCell(false);
     }
 
     RaycastHit2D CheckForCell(Vector2 direction)

@@ -85,7 +85,7 @@ public class Input : MonoBehaviour
 
         if (pressed == 1 && !hasPressed_selected)
         {
-            //_cellManager.SelectCell();
+            _cellManager.SelectCells_Input();
             hasPressed_selected = true;
         }
     }

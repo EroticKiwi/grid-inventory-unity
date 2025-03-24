@@ -26,6 +26,27 @@ public class GridCell : MonoBehaviour
         FillCell(item);
     }
 
+    public Grid_Item SelectCell()
+    {
+        DisableIcon();
+        return GetItem();
+    }
+
+    public void DisableIcon()
+    {
+        this.icon.gameObject.SetActive(false);
+    }
+
+    public void ActivateIcon()
+    {
+        this.icon.gameObject.SetActive(true);
+    }
+
+    public Grid_Item GetItem()
+    {
+        return item;
+    }
+
     public void EmptyCell()
     {
         item = null;
@@ -40,6 +61,7 @@ public class GridCell : MonoBehaviour
         icon.sprite = newItem.itemSprite;
         icon.color = Color.white;
         occupied = true;
+        icon.gameObject.SetActive(true);
     }
 
     public void AddToCellGroup(CellGroup cellGroup)
@@ -54,9 +76,12 @@ public class GridCell : MonoBehaviour
         owner = null;
     }
 
-    public void Focus()
+    public void Focus(bool color)
     {
-        margins.color = Color.green;
+        if (color)
+        {
+            margins.color = Color.green;
+        }
         gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
     }
 
