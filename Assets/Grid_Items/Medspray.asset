@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df7c5fa16ada13c46ae266367a10ab5a, type: 3}
   m_Name: Medspray
   m_EditorClassIdentifier: 
+  cellsOccupied: 2
+  inLine: 1
   itemSprite: {fileID: 21300000, guid: 9c96053794639ac439431d76452d5201, type: 3}
   gridSFX: {fileID: 0}

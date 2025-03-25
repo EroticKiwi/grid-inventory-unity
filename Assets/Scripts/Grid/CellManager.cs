@@ -1,10 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class CellManager : MonoBehaviour
 {
@@ -16,11 +13,10 @@ public class CellManager : MonoBehaviour
 
     bool isSelecting = false;
 
-    public SelectionGO selectionGO_one;
-    public GameObject selectionGO_oneprefab;
+    public SelectionGO selectionGO;
+    public GameObject selectionGO_prefab;
 
-    public SelectionGO selectionGO_two;
-
+    // DEBUG
     public GameObject doubleGrid;
     public Grid_Item medspray;
     public GameObject prefab;
@@ -42,10 +38,12 @@ public class CellManager : MonoBehaviour
     public void SetFirstCell(GridCell firstCell)
     {
         currentCellGroup.AssignCell(firstCell);
-        currentCellGroup.FocusCell(true);
+        currentCellGroup.AssignCellGroup(null);
 
-        CreateDebugCellGroup();
+        //CreateDebugCellGroup();
         FillCell();
+        currentCellGroup.FocusCell(true);
+        ArtificialGrid.Instance.CreateCellGroup(2, true, medspray);
     }
 
     void FillCell() // Debug
@@ -60,7 +58,7 @@ public class CellManager : MonoBehaviour
         tuple.Add(Tuple.Create(0, 1));
         tuple.Add(Tuple.Create(0, 2));
 
-        ArtificialGrid.Instance.CreateCellGroup(tuple, "medspray", doubleGrid, medspray);
+        ArtificialGrid.Instance.CreateCellGroupDebug(tuple, "medspray", doubleGrid, medspray);
     }
 
     public void NextCell(Vector2 direction)
@@ -120,7 +118,7 @@ public class CellManager : MonoBehaviour
         if (isSelecting)
         {
             currentCellGroup.DisableIcon();
-            selectionGO_one.SetPosition(currentCellGroup.GetCellTransform().position);
+            selectionGO.SetPosition(currentCellGroup.GetCellTransform().position);
         }
     }
 
@@ -128,30 +126,32 @@ public class CellManager : MonoBehaviour
     {
         if (!isSelecting) // Is NOW selecting
         {
-            if (currentCellGroup.isEmpty)
+            GridCell cell = currentCellGroup.GetCell();
+            if (cell != null && currentCellGroup.isEmpty)
             {
-                //Debug.Log("isEmpty!");
+                Debug.Log("isEmpty!");
+                Debug.Log(currentCellGroup.isEmpty);
                 return;
             }
 
-            if (currentCellGroup.GetCellGroup() == null)
+            if (cell != null)
             {
-                SelectCell_One();
+                SelectCell_Single();
             }
             else
             {
-                //SelectCell_Two();
-                //selectionGO.SetItem(currentCellGroup.GetCellGroup().GetItem());
+                Debug.Log("CellGroup");
             }
+
             isSelecting = true;
             return;
         }
 
         if (currentCellGroup.isEmpty)
         {
-            currentCellGroup.FillCell(selectionGO_one.storedItem);
+            currentCellGroup.FillCell(selectionGO.storedItem);
             currentCellGroup.FocusCell(true);
-            selectionGO_one.Empty();
+            selectionGO.Empty();
             isSelecting = false;
             return;
         }
@@ -163,22 +163,22 @@ public class CellManager : MonoBehaviour
     void SwapCells()
     {
         Grid_Item tempItem = currentCellGroup.GetItem();
-        currentCellGroup.FillCell(selectionGO_one.storedItem);
+        currentCellGroup.FillCell(selectionGO.storedItem);
         currentCellGroup.DisableIcon();
-        selectionGO_one.SetItem(tempItem);
+        selectionGO.SetItem(tempItem);
     }
 
-    void SelectCell_One()
+    void SelectCell_Single()
     {
-        if (selectionGO_one == null)
+        if (selectionGO == null)
         {
-            GameObject go = Instantiate(selectionGO_oneprefab, GameObject.FindWithTag("InventoryGrid").transform);
-            selectionGO_one = new SelectionGO(go);
+            GameObject go = Instantiate(selectionGO_prefab, GameObject.FindWithTag("InventoryGrid").transform);
+            selectionGO = new SelectionGO(go);
         }
 
         currentCellGroup.UnFocusCell();
-        selectionGO_one.SetItem(currentCellGroup.SelectCell());
-        selectionGO_one.SetPosition(currentCellGroup.GetCellTransform().position);
+        selectionGO.SetItem(currentCellGroup.SelectCell());
+        selectionGO.SetPosition(currentCellGroup.GetCellTransform().position);
         BackupCellGroup();
         currentCellGroup.EmptyCells();
     }

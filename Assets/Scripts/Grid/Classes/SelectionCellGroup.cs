@@ -13,12 +13,22 @@ public class SelectionCellGroup
 
     public void DisableIcon()
     {
-        cell.DisableIcon();
+        if (IsSingleCell())
+        {
+            cell.DisableIcon();
+            return;
+        }
+
+        cellGroup.DisableIcon();
     }
 
     public void EnableIcon()
     {
-        cell.EnableIcon();
+        if (IsSingleCell())
+        {
+            cell.EnableIcon();
+            return;
+        }
     }
 
     public Grid_Item SelectCell()
@@ -109,6 +119,8 @@ public class SelectionCellGroup
 
     public void FillCell(Grid_Item item)
     {
+        isEmpty = false;
+
         if (cellGroup == null)
         {
             cell.FillCell(item);

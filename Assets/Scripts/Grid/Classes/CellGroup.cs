@@ -19,6 +19,7 @@ public class CellGroup // Ogni volta che abbiamo un elemento che occupa più cell
         this.name = name;
         SetCells(coordinates, cells);
         InitializeCellGroupImage(cellGO);
+        FillCells(item);
         this.item = item;
     }
 
@@ -115,6 +116,24 @@ public class CellGroup // Ogni volta che abbiamo un elemento che occupa più cell
         }
         SetImage(null);
         item = null;
+    }
+
+    public void DisableIcon()
+    {
+        foreach (GridCell cell in cells)
+        {
+            cell.DisableIcon();
+        }
+        icon.gameObject.SetActive(false);
+    }
+
+    public void EnableIcon()
+    {
+        foreach (GridCell cell in cells)
+        {
+            cell.EnableIcon();
+        }
+        icon.gameObject.SetActive(true);
     }
 
     void SetImage(Sprite sprite)

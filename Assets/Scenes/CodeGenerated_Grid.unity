@@ -647,9 +647,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1764407417}
-  - component: {fileID: 1764407418}
   - component: {fileID: 1764407419}
   - component: {fileID: 1764407420}
+  - component: {fileID: 1764407418}
   m_Layer: 5
   m_Name: Grid
   m_TagString: InventoryGrid
@@ -722,11 +722,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a21efc475cd1da41921f5aa9cbb070a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectionGO_oneprefab: {fileID: 5418614994493342745, guid: d32817a8672e32c4781340ec8660ca67, type: 3}
+  selectionGO_prefab: {fileID: 5418614994493342745, guid: d32817a8672e32c4781340ec8660ca67, type: 3}
   doubleGrid: {fileID: 8181788124846357946, guid: d85cd8dbe577a904494764ca53b477dd, type: 3}
   medspray: {fileID: 11400000, guid: 73e8d86ab60aad84db3c4dcaf9150fbd, type: 2}
   prefab: {fileID: 0}
   firstCellItemDebug: {fileID: 11400000, guid: b3a5ef57b76dc5040b3426da8f408781, type: 2}
+  secondCellItemDebug: {fileID: 11400000, guid: 35185eb390f44cb42a7b363a0aeb67e6, type: 2}
 --- !u!1 &1783037669
 GameObject:
   m_ObjectHideFlags: 0
