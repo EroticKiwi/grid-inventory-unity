@@ -25,6 +25,7 @@ public class CellManager : MonoBehaviour
     public Grid_Item medspray;
     public GameObject prefab;
     public Grid_Item firstCellItemDebug;
+    public Grid_Item secondCellItemDebug;
 
     private void Awake()
     {
@@ -49,7 +50,7 @@ public class CellManager : MonoBehaviour
 
     void FillCell() // Debug
     {
-        ArtificialGrid.Instance.FillCell(firstCellItemDebug);
+        ArtificialGrid.Instance.FillCell(firstCellItemDebug, secondCellItemDebug);
     }
 
     void CreateDebugCellGroup() // Debug
@@ -69,6 +70,7 @@ public class CellManager : MonoBehaviour
         {
             return;
         }
+
         AssignPreviousCells();
         DisablePreviousCells();
         AssignCurrentCells(hit.transform.gameObject);
@@ -80,6 +82,7 @@ public class CellManager : MonoBehaviour
     {
         previousCellGroup.AssignCell(currentCellGroup.GetCell());
         previousCellGroup.AssignCellGroup(currentCellGroup.GetCellGroup());
+        previousCellGroup.EnableIcon();
     }
 
     void DisablePreviousCells()
@@ -116,6 +119,7 @@ public class CellManager : MonoBehaviour
         currentCellGroup.FocusCell(color);
         if (isSelecting)
         {
+            currentCellGroup.DisableIcon();
             selectionGO_one.SetPosition(currentCellGroup.GetCellTransform().position);
         }
     }
@@ -126,7 +130,7 @@ public class CellManager : MonoBehaviour
         {
             if (currentCellGroup.isEmpty)
             {
-                Debug.Log("isEmpty!");
+                //Debug.Log("isEmpty!");
                 return;
             }
 
@@ -153,14 +157,15 @@ public class CellManager : MonoBehaviour
         }
 
         SwapCells();
-        isSelecting = false;
+        //isSelecting = false;
     }
 
     void SwapCells()
     {
         Grid_Item tempItem = currentCellGroup.GetItem();
         currentCellGroup.FillCell(selectionGO_one.storedItem);
-        selectionGO_one.storedItem = tempItem;
+        currentCellGroup.DisableIcon();
+        selectionGO_one.SetItem(tempItem);
     }
 
     void SelectCell_One()

@@ -37,7 +37,7 @@ public class GridCell : MonoBehaviour
         this.icon.gameObject.SetActive(false);
     }
 
-    public void ActivateIcon()
+    public void EnableIcon()
     {
         this.icon.gameObject.SetActive(true);
     }

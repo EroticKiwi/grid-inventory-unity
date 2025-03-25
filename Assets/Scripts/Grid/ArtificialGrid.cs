@@ -83,9 +83,10 @@ public class ArtificialGrid : MonoBehaviour
         cellGroups.Add(newCellGroup);
     } // Debug
 
-    public void FillCell(Grid_Item item) // Debug
+    public void FillCell(Grid_Item item, Grid_Item item2) // Debug
     {
         grid[0,0].GetComponent<GridCell>().FillCell(item);
+        grid[2,1].GetComponent<GridCell>().FillCell(item2);
     }
 
     public List<GameObject> CheckForCollisions(Vector2 startPos, Vector2 endPos)
