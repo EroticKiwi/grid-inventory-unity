@@ -12,6 +12,7 @@ public class CellGroup // Ogni volta che abbiamo un elemento che occupa più cell
     public Image margins;
     public Image icon;
     public Grid_Item item;
+    public Vector2 cellGO_size;
 
     public CellGroup() { }
 
@@ -21,6 +22,7 @@ public class CellGroup // Ogni volta che abbiamo un elemento che occupa più cell
         InitializeCellGroupImage(cellGO);
         FillCells(item);
         this.item = item;
+        cellGO_size = new Vector2(/*cellGO.rect.width, cellGO.rect.size*/);
     }
 
     void SetCells(List<Tuple<int, int>> coordinates, List<GridCell> cells)

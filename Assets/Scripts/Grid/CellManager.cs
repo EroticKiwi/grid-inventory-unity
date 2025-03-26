@@ -16,6 +16,8 @@ public class CellManager : MonoBehaviour
     public SelectionGO selectionGO;
     public GameObject selectionGO_prefab;
 
+    public CheckColliderObject checkColliderObj;
+
     // DEBUG
     public GameObject doubleGrid;
     public Grid_Item medspray;
@@ -226,11 +228,24 @@ public class CellManager : MonoBehaviour
         }
         else
         {
-            position = currentCellGroup.GetCell().transform.position;
+            //position = currentCellGroup.GetCell().transform.position;
+            Raycast2D hit;
+            hit.collider = CheckForCellGroup();
+            return hit;
         }
 
         RaycastHit2D hit = Physics2D.Raycast(position, direction);
         return hit;
+    }
+
+    Collider2D CheckForCellGroup()
+    {
+        // 1 - Prendi l'oggetto Check Collider;
+        // 2 - Modifica la grandezza del Check Collider per matcharla a quella del go della cellGroup;
+        // 3 - Sposta nella direzione in cui si vuole andare di una cella o riga;
+        // 4 - Controlla che il numero di celle coperte sia uguale al numero di celle necessarie da coprire, altrimenti return NULL;
+        // 5 - Sposta cellGO di cellGroup nella posizione del Check Collider
+        // 6 - Sposta i cursor[] attivi di selectedGO nelle posizioni delle celle appena coperte
     }
 
     void DebugLog_CurrentCellGroup()
