@@ -43,7 +43,7 @@ public class CellManager : MonoBehaviour
         //CreateDebugCellGroup();
         FillCell();
         currentCellGroup.FocusCell(true);
-        ArtificialGrid.Instance.CreateCellGroup(2, true, medspray);
+        ArtificialGrid.Instance.CreateCellGroup(medspray.cellsOccupied, true, medspray);
     }
 
     void FillCell() // Debug
@@ -51,23 +51,16 @@ public class CellManager : MonoBehaviour
         ArtificialGrid.Instance.FillCell(firstCellItemDebug, secondCellItemDebug);
     }
 
-    void CreateDebugCellGroup() // Debug
-    {
-        List<Tuple<int, int>> tuple = new List<Tuple<int, int>>();
-
-        tuple.Add(Tuple.Create(0, 1));
-        tuple.Add(Tuple.Create(0, 2));
-
-        ArtificialGrid.Instance.CreateCellGroupDebug(tuple, "medspray", doubleGrid, medspray);
-    }
-
     public void NextCell(Vector2 direction)
     {
         RaycastHit2D hit = CheckForCell(direction);
         if (hit.collider == null)
         {
+            Debug.Log("null");
             return;
         }
+
+        Debug.Log(hit.transform.name);
 
         AssignPreviousCells();
         DisablePreviousCells();
@@ -109,6 +102,11 @@ public class CellManager : MonoBehaviour
             currentCellGroup.AssignCell(null);
             currentCellGroup.AssignCellGroup(cell.owner);
             currentCellGroup.FocusCellGroup(color);
+            if (isSelecting)
+            {
+                currentCellGroup.DisableIcon();
+                //selectionGO.SetPosition(); // Position to occupy
+            }
             return;
         }
 
@@ -129,8 +127,6 @@ public class CellManager : MonoBehaviour
             GridCell cell = currentCellGroup.GetCell();
             if (cell != null && currentCellGroup.isEmpty)
             {
-                Debug.Log("isEmpty!");
-                Debug.Log(currentCellGroup.isEmpty);
                 return;
             }
 
@@ -140,7 +136,7 @@ public class CellManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("CellGroup");
+                SelectCell_Multiple();
             }
 
             isSelecting = true;
@@ -158,6 +154,27 @@ public class CellManager : MonoBehaviour
 
         SwapCells();
         //isSelecting = false;
+    }
+
+    void SelectCell_Multiple()
+    {
+        if (selectionGO == null)
+        {
+            int amount = currentCellGroup.GetItem().cellsOccupied;
+            List<GameObject> gos = new List<GameObject>();
+            for (int i = 0; i < amount; i++)
+            {
+                gos.Add(Instantiate(selectionGO_prefab, GameObject.FindWithTag("InventoryGrid").transform));
+            }
+            selectionGO = new SelectionGO(gos);
+        }
+
+        currentCellGroup.UnFocusCellGroup_KeepLayer();
+        Grid_Item item = currentCellGroup.GetItem();
+        selectionGO.SetItems(item);
+        selectionGO.DisableIcons();
+        currentCellGroup.DisableIcon();
+        selectionGO.SetPosition(currentCellGroup.GetCellGroupPositions());
     }
 
     void SwapCells()
@@ -206,7 +223,8 @@ public class CellManager : MonoBehaviour
         if (cellGroup != null)
         {
             position = cellGroup.cells[0].transform.position;
-        } else
+        }
+        else
         {
             position = currentCellGroup.GetCell().transform.position;
         }

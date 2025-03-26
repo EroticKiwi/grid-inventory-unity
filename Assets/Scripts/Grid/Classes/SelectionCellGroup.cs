@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
 
 public class SelectionCellGroup
@@ -72,6 +74,11 @@ public class SelectionCellGroup
         cellGroup.UnFocus();
     }
 
+    public  void UnFocusCellGroup_KeepLayer()
+    {
+        cellGroup.UnFocus_KeepLayer();
+    }
+
     public CellGroup GetCellGroup()
     {
         return cellGroup;
@@ -80,6 +87,17 @@ public class SelectionCellGroup
     public Transform GetCellGroupTransform() // Returns transform of the first cell of the cellgroup
     {
         return cellGroup.cells[0].transform;
+    }
+
+    public List<Vector2> GetCellGroupPositions()
+    {
+        return cellGroup.GetCellsPositions();
+    }
+
+    public Grid_Item SelectCells()
+    {
+        DisableIcon();
+        return cellGroup.item;
     }
 
     void CheckIsEmpty()

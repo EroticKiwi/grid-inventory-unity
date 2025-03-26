@@ -94,8 +94,22 @@ public class CellGroup // Ogni volta che abbiamo un elemento che occupa più cell
         }
     }
 
+    public void UnFocus_KeepLayer()
+    {
+        margins.color = Color.white;
+    }
+
     public Grid_Item GetItem()
     {
+        return item;
+    }
+
+    public Grid_Item SelectCells()
+    {
+        foreach(GridCell cell in cells)
+        {
+            cell.DisableIcon();
+        }
         return item;
     }
 
@@ -124,7 +138,7 @@ public class CellGroup // Ogni volta che abbiamo un elemento che occupa più cell
         {
             cell.DisableIcon();
         }
-        icon.gameObject.SetActive(false);
+        //icon.gameObject.SetActive(false);
     }
 
     public void EnableIcon()
@@ -136,8 +150,18 @@ public class CellGroup // Ogni volta che abbiamo un elemento che occupa più cell
         icon.gameObject.SetActive(true);
     }
 
-    void SetImage(Sprite sprite)
+    public void SetImage(Sprite sprite)
     {
         icon.sprite = sprite;
+    }
+
+    public List<Vector2> GetCellsPositions()
+    {
+        List<Vector2> positions = new List<Vector2>();
+        foreach (GridCell cell in cells)
+        {
+            positions.Add(cell.transform.position);
+        }
+        return positions;
     }
 }

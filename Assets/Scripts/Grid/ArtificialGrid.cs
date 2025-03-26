@@ -253,6 +253,12 @@ public class ArtificialGrid : MonoBehaviour
         return true;
     }
 
+    public GameObject InstantiateSelectionGO()
+    {
+        GameObject go = Instantiate(_cellManager.selectionGO_prefab, GameObject.FindWithTag("InventoryGrid").transform);
+        return go;
+    }
+
     public List<GameObject> CheckForCollisions(Vector2 startPos, Vector2 endPos)
     {
         List<GameObject> collisions = new List<GameObject>();

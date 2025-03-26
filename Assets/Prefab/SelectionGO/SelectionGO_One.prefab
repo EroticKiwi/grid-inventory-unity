@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5795069230109461929}
   - component: {fileID: 5515737766115226177}
   - component: {fileID: 9122807799570921188}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: margins
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85,7 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8805311461990700632}
   - component: {fileID: 1802328966970685136}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: SelectionGO_One
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 1770940763335999901}
   - component: {fileID: 6120055108633001479}
   - component: {fileID: 2764520828355562100}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
