@@ -2,31 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CheckCollider : MonoBehaviour
+public class CheckCollider
 {
-    public List<GameObject> colliders;
+    public List<GameObject> colliders; // Things it's colliding with
     RectTransform rect;
 
-    Vector2 startPos;
-    Vector2 endPos;
+    Vector2 startPos; // Upper left corner it will create the check area from
+    Vector2 endPos; // Bottom right corner it will create the check area from
 
-    private void Awake()
+    public CheckCollider(RectTransform rect)
     {
         colliders = new List<GameObject>();
-        rect = GetComponent<RectTransform>();
+        this.rect = rect;
         SetCollisionVectors();
-    }
-
-    private void Update()
-    {
-        CheckCollision();
     }
 
     void CheckCollision()
     {
         colliders = ArtificialGrid.Instance.CheckForCollisions(startPos, endPos);
     }
-    
+
     public GameObject[] CheckCells()
     {
         GameObject[] objs = new GameObject[colliders.Count];
@@ -37,9 +32,48 @@ public class CheckCollider : MonoBehaviour
         return objs;
     }
 
+    public void SetSize(Vector2 newSize)
+    {
+        rect.sizeDelta = newSize;
+        SetCollisionVectors();
+    }
+
+    public void SetPosition(Vector2 newPos, Vector2 direction) {
+        Vector2 finalPos;
+        Debug.Log(newPos);
+
+        if (direction == Vector2.up)
+        {
+            float up = newPos.y + ArtificialGrid.Instance.GetCellSize().y;
+            finalPos = new Vector2(newPos.x, up);
+        }
+
+        if (direction == Vector2.down)
+        {
+            float down = newPos.y - ArtificialGrid.Instance.GetCellSize().y;
+            Debug.Log(newPos.y);
+            Debug.Log(down);
+            finalPos = new Vector2(newPos.x, down);
+        }
+
+        if (direction == Vector2.right)
+        {
+            float right = newPos.x + ArtificialGrid.Instance.GetCellSize().x;
+            finalPos = new Vector2(right, newPos.y);
+
+        }
+
+        if (direction == Vector2.left)
+        {
+            float left = newPos.x - ArtificialGrid.Instance.GetCellSize().x;
+            finalPos = new Vector2(left, newPos.y);
+        }
+
+        rect.position = newPos;
+    }
+
     void SetCollisionVectors()
     {
-        RectTransform rect = transform.GetComponent<RectTransform>();
         Vector3[] corners = new Vector3[4];
         rect.GetWorldCorners(corners);
         startPos = corners[2];

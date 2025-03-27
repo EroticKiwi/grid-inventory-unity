@@ -22,6 +22,8 @@ public class ArtificialGrid : MonoBehaviour
     public float xStart;
     public float yStart;
 
+    Vector2 cellSize;
+
     //float gridSpacingX = 10f;
     //float gridSpacingY = 20f;
 
@@ -47,6 +49,7 @@ public class ArtificialGrid : MonoBehaviour
         xStart = transform.position.x - (transform.position.x / 2);
         yStart = transform.position.y * 1.25f;
         grid = new GameObject[gridRows,gridCols];
+        SetCellSize();
         GenerateGrid();
     }
 
@@ -102,6 +105,17 @@ public class ArtificialGrid : MonoBehaviour
     {
         grid[0,0].GetComponent<GridCell>().FillCell(item);
         grid[2,1].GetComponent<GridCell>().FillCell(item2);
+    }
+
+    void SetCellSize()
+    {
+        RectTransform rectTransform = cellPrefab.GetComponent<RectTransform>();
+        cellSize = new Vector2(rectTransform.rect.width, rectTransform.rect.height);
+    }
+
+    public Vector2 GetCellSize()
+    {
+        return cellSize;
     }
 
     public void CreateCellGroup(int occupiedCells, bool inLine, Grid_Item item)

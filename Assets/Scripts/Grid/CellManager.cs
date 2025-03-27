@@ -16,7 +16,8 @@ public class CellManager : MonoBehaviour
     public SelectionGO selectionGO;
     public GameObject selectionGO_prefab;
 
-    public CheckColliderObject checkColliderObj;
+    public CheckCollider checkColliderObj;
+    public GameObject checkCollider_prefab;
 
     // DEBUG
     public GameObject doubleGrid;
@@ -28,6 +29,7 @@ public class CellManager : MonoBehaviour
     private void Awake()
     {
         InstantiateCellGroups();
+        InstantiateCheckCollider();
     }
 
     void InstantiateCellGroups()
@@ -35,6 +37,13 @@ public class CellManager : MonoBehaviour
         currentCellGroup = new SelectionCellGroup();
         previousCellGroup = new SelectionCellGroup();
         backupCellGroup = new SelectionCellGroup();
+    }
+
+    void InstantiateCheckCollider()
+    {
+        GameObject tempGO = Instantiate(checkCollider_prefab, GameObject.FindWithTag("InventoryGrid").transform);
+        RectTransform rectTransform = tempGO.GetComponent<RectTransform>();
+        checkColliderObj = new CheckCollider(rectTransform);
     }
 
     public void SetFirstCell(GridCell firstCell)
@@ -55,8 +64,8 @@ public class CellManager : MonoBehaviour
 
     public void NextCell(Vector2 direction)
     {
-        RaycastHit2D hit = CheckForCell(direction);
-        if (hit.collider == null)
+        GameObject hit = CheckForCell(direction);
+        if (hit == null)
         {
             Debug.Log("null");
             return;
@@ -66,7 +75,7 @@ public class CellManager : MonoBehaviour
 
         AssignPreviousCells();
         DisablePreviousCells();
-        AssignCurrentCells(hit.transform.gameObject);
+        AssignCurrentCells(hit);
         
         // DebugLog_CurrentCellGroup();
     }
@@ -173,7 +182,7 @@ public class CellManager : MonoBehaviour
 
         currentCellGroup.UnFocusCellGroup_KeepLayer();
         Grid_Item item = currentCellGroup.GetItem();
-        selectionGO.SetItems(item);
+        selectionGO.SetItems(item, currentCellGroup.GetCellGroupSize());
         selectionGO.DisableIcons();
         currentCellGroup.DisableIcon();
         selectionGO.SetPosition(currentCellGroup.GetCellGroupPositions());
@@ -218,34 +227,38 @@ public class CellManager : MonoBehaviour
         backupCellGroup.FocusCell(false);
     }
 
-    RaycastHit2D CheckForCell(Vector2 direction)
+    GameObject CheckForCell(Vector2 direction)
     {
         Vector2 position = Vector2.zero;
         CellGroup cellGroup = currentCellGroup.GetCellGroup();
         if (cellGroup != null)
         {
-            position = cellGroup.cells[0].transform.position;
+            //position = cellGroup.cells[0].transform.position;
+            GameObject go;
+            go = CheckForCellGroup(direction);
+            return go;
         }
         else
         {
-            //position = currentCellGroup.GetCell().transform.position;
-            Raycast2D hit;
-            hit.collider = CheckForCellGroup();
-            return hit;
+            position = currentCellGroup.GetCell().transform.position;
         }
 
         RaycastHit2D hit = Physics2D.Raycast(position, direction);
-        return hit;
+        return hit.transform.gameObject;
     }
 
-    Collider2D CheckForCellGroup()
+    GameObject CheckForCellGroup(Vector2 direction)
     {
         // 1 - Prendi l'oggetto Check Collider;
         // 2 - Modifica la grandezza del Check Collider per matcharla a quella del go della cellGroup;
+        checkColliderObj.SetSize(currentCellGroup.GetCellGroupSize());
+        Debug.Log(currentCellGroup.GetCellGroupSize());
         // 3 - Sposta nella direzione in cui si vuole andare di una cella o riga;
+        checkColliderObj.SetPosition(currentCellGroup.GetCellGroupPosition(), direction); // Problema, capisci bene come funzionano le coordinate e definisci bene lo spacing tra le celle e le righe
         // 4 - Controlla che il numero di celle coperte sia uguale al numero di celle necessarie da coprire, altrimenti return NULL;
         // 5 - Sposta cellGO di cellGroup nella posizione del Check Collider
         // 6 - Sposta i cursor[] attivi di selectedGO nelle posizioni delle celle appena coperte
+        return null;
     }
 
     void DebugLog_CurrentCellGroup()

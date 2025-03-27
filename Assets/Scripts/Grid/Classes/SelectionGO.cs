@@ -10,6 +10,7 @@ public class SelectionGO
     public List<Image> margins;
     public List<Image> icon;
     public Grid_Item storedItem;
+    public Vector2 cellGroupSize;
 
     public SelectionGO(List<GameObject> gos)
     {
@@ -33,7 +34,7 @@ public class SelectionGO
         cursors[0].SetActive(true);
     }
 
-    public void SetItems(Grid_Item item)
+    public void SetItems(Grid_Item item, Vector2 size)
     {
         if (cursors.Count < item.cellsOccupied) // Non funziona correttamente
         {
@@ -56,6 +57,19 @@ public class SelectionGO
             }
         }
         storedItem = item;
+
+        SetSize(size);
+        Debug.Log("size: " + size);
+    }
+
+    void SetSize(Vector2 size)
+    {
+        cellGroupSize = size;
+    }
+
+    public Vector2 GetSize()
+    {
+        return cellGroupSize;
     }
 
     public void SetPosition(Vector2 position)

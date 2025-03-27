@@ -723,6 +723,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectionGO_prefab: {fileID: 5418614994493342745, guid: d32817a8672e32c4781340ec8660ca67, type: 3}
+  checkCollider_prefab: {fileID: 1407567649715214265, guid: ff13738908e52484eb251f789a949cbc, type: 3}
   doubleGrid: {fileID: 8181788124846357946, guid: d85cd8dbe577a904494764ca53b477dd, type: 3}
   medspray: {fileID: 11400000, guid: 73e8d86ab60aad84db3c4dcaf9150fbd, type: 2}
   prefab: {fileID: 0}

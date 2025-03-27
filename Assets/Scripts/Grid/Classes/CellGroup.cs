@@ -18,11 +18,17 @@ public class CellGroup // Ogni volta che abbiamo un elemento che occupa più cell
 
     public CellGroup(string name, List<Tuple<int, int>> coordinates, List<GridCell> cells, GameObject cellGO, Grid_Item item) {
         this.name = name;
+        this.item = item;
         SetCells(coordinates, cells);
         InitializeCellGroupImage(cellGO);
         FillCells(item);
-        this.item = item;
-        cellGO_size = new Vector2(/*cellGO.rect.width, cellGO.rect.size*/);
+        GetSize();
+    }
+
+    void GetSize()
+    {
+        RectTransform rect = cellGO.GetComponent<RectTransform>();
+        cellGO_size = new Vector2(rect.rect.width, rect.rect.height);
     }
 
     void SetCells(List<Tuple<int, int>> coordinates, List<GridCell> cells)
@@ -157,6 +163,11 @@ public class CellGroup // Ogni volta che abbiamo un elemento che occupa più cell
         icon.sprite = sprite;
     }
 
+    public Vector2 GetCellGroupPosition()
+    {
+        return cellGO.transform.position;
+    }
+
     public List<Vector2> GetCellsPositions()
     {
         List<Vector2> positions = new List<Vector2>();
@@ -165,5 +176,10 @@ public class CellGroup // Ogni volta che abbiamo un elemento che occupa più cell
             positions.Add(cell.transform.position);
         }
         return positions;
+    }
+
+    public Vector2 GetCellGroupSize()
+    {
+        return cellGO_size;
     }
 }

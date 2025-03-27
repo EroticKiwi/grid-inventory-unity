@@ -94,6 +94,16 @@ public class SelectionCellGroup
         return cellGroup.GetCellsPositions();
     }
 
+    public Vector2 GetCellGroupPosition()
+    {
+        return cellGroup.GetCellGroupPosition();
+    }
+
+    public Vector2 GetCellGroupSize()
+    {
+        return cellGroup.GetCellGroupSize();
+    }
+
     public Grid_Item SelectCells()
     {
         DisableIcon();
@@ -133,6 +143,11 @@ public class SelectionCellGroup
         }
 
         return cellGroup.GetItem();
+    }
+
+    public Vector2 GetCellSize()
+    {
+        return cellGroup.GetCellGroupSize();
     }
 
     public void FillCell(Grid_Item item)
