@@ -252,9 +252,8 @@ public class CellManager : MonoBehaviour
         // 1 - Prendi l'oggetto Check Collider;
         // 2 - Modifica la grandezza del Check Collider per matcharla a quella del go della cellGroup;
         checkColliderObj.SetSize(currentCellGroup.GetCellGroupSize());
-        Debug.Log(currentCellGroup.GetCellGroupSize());
         // 3 - Sposta nella direzione in cui si vuole andare di una cella o riga;
-        checkColliderObj.SetPosition(currentCellGroup.GetCellGroupPosition(), direction); // Problema, capisci bene come funzionano le coordinate e definisci bene lo spacing tra le celle e le righe
+        checkColliderObj.SetPosition(currentCellGroup.GetCellGroupPosition(), direction); // Problema, capisci bene come funzionano le coordinate
         // 4 - Controlla che il numero di celle coperte sia uguale al numero di celle necessarie da coprire, altrimenti return NULL;
         // 5 - Sposta cellGO di cellGroup nella posizione del Check Collider
         // 6 - Sposta i cursor[] attivi di selectedGO nelle posizioni delle celle appena coperte

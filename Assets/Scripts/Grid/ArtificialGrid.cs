@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ArtificialGrid : MonoBehaviour
 {
@@ -22,10 +20,13 @@ public class ArtificialGrid : MonoBehaviour
     public float xStart;
     public float yStart;
 
-    Vector2 cellSize;
 
-    //float gridSpacingX = 10f;
-    //float gridSpacingY = 20f;
+    [Range(2.5f, 2f)][Tooltip("Higher value = less space between cells")]
+    public float gridSpacingX = 2.5f; // 2.2 to 2.5 is the sweet spot, anything else and you'll need to change various prefab sizes
+    [Range(2.5f, 2f)][Tooltip("Higher value = less space between cells")]
+    public float gridSpacingY = 2.5f; // 2.2 to 2.5 is the sweet spot, anything else and you'll need to change various prefab sizes
+
+    Vector2 cellSize;
 
     // ---Resources---
     GameObject inLineTwoCells;
@@ -72,10 +73,10 @@ public class ArtificialGrid : MonoBehaviour
             {
                 grid[i,j] = Instantiate(cellPrefab, new Vector3(xStart, yStart, 0f), Quaternion.identity, gridParent);
                 grid[i, j].name = i + " - " + j;
-                xStart += grid[0, 0].GetComponent<RectTransform>().sizeDelta.x / 2;
+                xStart += grid[0, 0].GetComponent<RectTransform>().sizeDelta.x / gridSpacingX; // Handles spacing between cells on the X axis
             }
             xStart = original_xStart;
-            yStart -= grid[0,0].GetComponent<RectTransform>().sizeDelta.y / 2;
+            yStart -= grid[0, 0].GetComponent<RectTransform>().sizeDelta.y / gridSpacingY; // Handles spacing between cells on the Y axis
         }
         _cellManager.SetFirstCell(grid[0, 0].GetComponent<GridCell>());
     }
@@ -271,6 +272,16 @@ public class ArtificialGrid : MonoBehaviour
     {
         GameObject go = Instantiate(_cellManager.selectionGO_prefab, GameObject.FindWithTag("InventoryGrid").transform);
         return go;
+    }
+
+    public float GetSpacingX()
+    {
+        return grid[0, 0].GetComponent<RectTransform>().sizeDelta.x / gridSpacingX;
+    }
+
+    public float GetSpacingY()
+    {
+        return grid[0, 0].GetComponent<RectTransform>().sizeDelta.y / gridSpacingY;
     }
 
     public List<GameObject> CheckForCollisions(Vector2 startPos, Vector2 endPos)

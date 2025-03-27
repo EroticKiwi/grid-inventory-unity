@@ -35,6 +35,7 @@ public class CheckCollider
     public void SetSize(Vector2 newSize)
     {
         rect.sizeDelta = newSize;
+        Debug.Log(rect.sizeDelta);
         SetCollisionVectors();
     }
 
@@ -50,7 +51,7 @@ public class CheckCollider
 
         if (direction == Vector2.down)
         {
-            float down = newPos.y - ArtificialGrid.Instance.GetCellSize().y;
+            float down = newPos.y - ArtificialGrid.Instance.GetCellSize().y; // Calcola bene lo spazio tra una cella e l'altra qui!
             Debug.Log(newPos.y);
             Debug.Log(down);
             finalPos = new Vector2(newPos.x, down);

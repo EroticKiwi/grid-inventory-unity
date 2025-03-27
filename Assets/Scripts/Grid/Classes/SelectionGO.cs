@@ -59,7 +59,7 @@ public class SelectionGO
         storedItem = item;
 
         SetSize(size);
-        Debug.Log("size: " + size);
+        //Debug.Log("size: " + size);
     }
 
     void SetSize(Vector2 size)
