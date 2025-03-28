@@ -43,31 +43,16 @@ public class CheckCollider
         Vector2 finalPos;
         Debug.Log(newPos);
 
-        if (direction == Vector2.up)
+        if (direction == Vector2.down || direction == Vector2.up)
         {
-            float up = newPos.y + ArtificialGrid.Instance.GetCellSize().y;
-            finalPos = new Vector2(newPos.x, up);
+            float yAxis = ArtificialGrid.Instance.GetNextYPosition(ref newPos.y, direction); // Calcola bene lo spazio tra una cella e l'altra qui!
+            finalPos = new Vector2(newPos.x, yAxis);
         }
 
-        if (direction == Vector2.down)
+        if (direction == Vector2.right || direction == Vector2.down)
         {
-            float down = newPos.y - ArtificialGrid.Instance.GetCellSize().y; // Calcola bene lo spazio tra una cella e l'altra qui!
-            Debug.Log(newPos.y);
-            Debug.Log(down);
-            finalPos = new Vector2(newPos.x, down);
-        }
-
-        if (direction == Vector2.right)
-        {
-            float right = newPos.x + ArtificialGrid.Instance.GetCellSize().x;
-            finalPos = new Vector2(right, newPos.y);
-
-        }
-
-        if (direction == Vector2.left)
-        {
-            float left = newPos.x - ArtificialGrid.Instance.GetCellSize().x;
-            finalPos = new Vector2(left, newPos.y);
+            float xAxis = ArtificialGrid.Instance.GetNextXPosition(ref newPos.x, direction);
+            finalPos = new Vector2(xAxis, newPos.y);
         }
 
         rect.position = newPos;

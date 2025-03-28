@@ -22,9 +22,9 @@ public class ArtificialGrid : MonoBehaviour
 
 
     [Range(2.5f, 2f)][Tooltip("Higher value = less space between cells")]
-    public float gridSpacingX = 2.5f; // 2.2 to 2.5 is the sweet spot, anything else and you'll need to change various prefab sizes
+    public float gridSpacingX = 2.5f; // 2.2 to 2.5 is the sweet spot, anything else and you'll need to change various prefab sizes, mostly the multicell ones
     [Range(2.5f, 2f)][Tooltip("Higher value = less space between cells")]
-    public float gridSpacingY = 2.5f; // 2.2 to 2.5 is the sweet spot, anything else and you'll need to change various prefab sizes
+    public float gridSpacingY = 2.5f; // 2.2 to 2.5 is the sweet spot, anything else and you'll need to change various prefab sizes, mostly the multicell ones
 
     Vector2 cellSize;
 
@@ -274,14 +274,26 @@ public class ArtificialGrid : MonoBehaviour
         return go;
     }
 
-    public float GetSpacingX()
+    public float GetNextYPosition(ref float y, Vector2 direction)
     {
-        return grid[0, 0].GetComponent<RectTransform>().sizeDelta.x / gridSpacingX;
+
+        if (direction == Vector2.down)
+        {
+            return y -= grid[0, 0].GetComponent<RectTransform>().sizeDelta.y / gridSpacingY;
+        }
+
+        return y += grid[0, 0].GetComponent<RectTransform>().sizeDelta.y / gridSpacingY;
     }
 
-    public float GetSpacingY()
+    public float GetNextXPosition(ref float x, Vector2 direction)
     {
-        return grid[0, 0].GetComponent<RectTransform>().sizeDelta.y / gridSpacingY;
+
+        if (direction == Vector2.right)
+        {
+            return x += grid[0, 0].GetComponent<RectTransform>().sizeDelta.x / gridSpacingX;
+        }
+
+        return x += grid[0, 0].GetComponent<RectTransform>().sizeDelta.x / gridSpacingX;
     }
 
     public List<GameObject> CheckForCollisions(Vector2 startPos, Vector2 endPos)

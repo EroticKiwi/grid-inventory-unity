@@ -697,8 +697,8 @@ MonoBehaviour:
   gridCols: 3
   xStart: 207
   yStart: 0
-  gridSpacingX: 2.5
-  gridSpacingY: 2.5
+  gridSpacingX: 2
+  gridSpacingY: 2
 --- !u!114 &1764407419
 MonoBehaviour:
   m_ObjectHideFlags: 0

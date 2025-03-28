@@ -233,10 +233,10 @@ public class CellManager : MonoBehaviour
         CellGroup cellGroup = currentCellGroup.GetCellGroup();
         if (cellGroup != null)
         {
-            //position = cellGroup.cells[0].transform.position;
-            GameObject go;
-            go = CheckForCellGroup(direction);
-            return go;
+            position = cellGroup.cells[0].transform.position;
+            //GameObject go;
+            //go = CheckForCellGroup(direction);
+            //return go;
         }
         else
         {
@@ -244,6 +244,10 @@ public class CellManager : MonoBehaviour
         }
 
         RaycastHit2D hit = Physics2D.Raycast(position, direction);
+        if (hit.transform == null)
+        {
+            return null;
+        }
         return hit.transform.gameObject;
     }
 
