@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
@@ -34,32 +35,24 @@ public class SelectionGO
         cursors[0].SetActive(true);
     }
 
+    public void SetSelection(Grid_Item item, Vector2 size, List<Vector2> positions)
+    {
+        CheckIfEnoughCursors(positions.Count);
+        SetItems(item, size);
+        SetPosition(positions);
+    }
+
     public void SetItems(Grid_Item item, Vector2 size)
     {
-        if (cursors.Count < item.cellsOccupied) // Non funziona correttamente
-        {
-            int difference = item.cellsOccupied - cursors.Count;
-            for (int i = cursors.Count; i < difference; i++)
-            {
-                cursors.Add(ArtificialGrid.Instance.InstantiateSelectionGO());
-                margins.Add(cursors[i].transform.Find("margins").GetComponent<Image>());
-                icon.Add(cursors[i].transform.Find("icon").GetComponent<Image>());
-            }
-
-            //GetImagesMultiple();
-        }
-
         for (int i = 0; i < cursors.Count; i++)
         {
-            if (cursors[i].activeSelf)
-            {
-                icon[i].sprite = item.itemSprite;
-            }
+            icon[i].sprite = item.itemSprite;
+            cursors[i].SetActive(true);
         }
         storedItem = item;
 
         SetSize(size);
-        //Debug.Log("size: " + size);
+        DisableIcons();
     }
 
     void SetSize(Vector2 size)
@@ -82,6 +75,37 @@ public class SelectionGO
         for (int i = 0; i < positions.Count; i++)
         {
             cursors[i].transform.position = positions[i];
+        }
+    }
+
+    void CheckIfEnoughCursors(int neededCursors)
+    {
+        if (cursors.Count < neededCursors)
+        {
+            int count = cursors.Count;
+            while (count < neededCursors)
+            {
+                GameObject go = ArtificialGrid.Instance.InstantiateSelectionGO();
+                cursors.Add(go);
+                margins.Add(go.transform.Find("margins").GetComponent<Image>());
+                icon.Add(go.transform.Find("icon").GetComponent<Image>());
+                count++;
+            }
+        }
+
+        // LogAllIcons();
+    }
+
+    void LogAllIcons()
+    {
+        Debug.Log("icon count = " + icon.Count);
+        for (int i = 0; i < icon.Count; i++)
+        {
+            Debug.Log(icon[i]);
+            if (i > 0 && icon[i] == icon[i-1])
+            {
+                Debug.Log("le icone sono uguali!");
+            }
         }
     }
 

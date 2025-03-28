@@ -71,7 +71,7 @@ public class CellManager : MonoBehaviour
             return;
         }
 
-        Debug.Log(hit.transform.name);
+        // Debug.Log(hit.transform.name);
 
         AssignPreviousCells();
         DisablePreviousCells();
@@ -175,17 +175,15 @@ public class CellManager : MonoBehaviour
             List<GameObject> gos = new List<GameObject>();
             for (int i = 0; i < amount; i++)
             {
-                gos.Add(Instantiate(selectionGO_prefab, GameObject.FindWithTag("InventoryGrid").transform));
+                gos.Add(ArtificialGrid.Instance.InstantiateSelectionGO());
             }
             selectionGO = new SelectionGO(gos);
         }
 
         currentCellGroup.UnFocusCellGroup_KeepLayer();
         Grid_Item item = currentCellGroup.GetItem();
-        selectionGO.SetItems(item, currentCellGroup.GetCellGroupSize());
-        selectionGO.DisableIcons();
+        selectionGO.SetSelection(item, currentCellGroup.GetCellGroupSize(), currentCellGroup.GetCellGroupPositions());
         currentCellGroup.DisableIcon();
-        selectionGO.SetPosition(currentCellGroup.GetCellGroupPositions());
     }
 
     void SwapCells()
@@ -233,10 +231,13 @@ public class CellManager : MonoBehaviour
         CellGroup cellGroup = currentCellGroup.GetCellGroup();
         if (cellGroup != null)
         {
+            if (isSelecting)
+            {
+                GameObject go;
+                go = CheckForCellGroup(direction);
+                return go;
+            }
             position = cellGroup.cells[0].transform.position;
-            //GameObject go;
-            //go = CheckForCellGroup(direction);
-            //return go;
         }
         else
         {

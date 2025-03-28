@@ -8,7 +8,7 @@ public class CellGroup // Ogni volta che abbiamo un elemento che occupa più cell
     public string name;
     public List<Tuple<int, int>> coordinates; // (0,1) - (0,2)
     public List<GridCell> cells;
-    public GameObject cellGO;
+    public GameObject cellGO; // Image on the canvas
     public Image margins;
     public Image icon;
     public Grid_Item item;
@@ -165,7 +165,7 @@ public class CellGroup // Ogni volta che abbiamo un elemento che occupa più cell
 
     public Vector2 GetCellGroupPosition()
     {
-        return cellGO.transform.position;
+        return cellGO.transform.localPosition; // Local Position perchè cellGO è comunque soggetto ai suoi parent
     }
 
     public List<Vector2> GetCellsPositions()

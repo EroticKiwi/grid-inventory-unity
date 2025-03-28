@@ -274,7 +274,7 @@ public class ArtificialGrid : MonoBehaviour
         return go;
     }
 
-    public float GetNextYPosition(ref float y, Vector2 direction)
+    public float GetNextYPosition(float y, Vector2 direction)
     {
 
         if (direction == Vector2.down)
@@ -285,12 +285,12 @@ public class ArtificialGrid : MonoBehaviour
         return y += grid[0, 0].GetComponent<RectTransform>().sizeDelta.y / gridSpacingY;
     }
 
-    public float GetNextXPosition(ref float x, Vector2 direction)
+    public float GetNextXPosition(float x, Vector2 direction)
     {
 
-        if (direction == Vector2.right)
+        if (direction == Vector2.left)
         {
-            return x += grid[0, 0].GetComponent<RectTransform>().sizeDelta.x / gridSpacingX;
+            return x -= grid[0, 0].GetComponent<RectTransform>().sizeDelta.x / gridSpacingX;
         }
 
         return x += grid[0, 0].GetComponent<RectTransform>().sizeDelta.x / gridSpacingX;

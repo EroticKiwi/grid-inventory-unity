@@ -40,22 +40,24 @@ public class CheckCollider
     }
 
     public void SetPosition(Vector2 newPos, Vector2 direction) {
-        Vector2 finalPos;
-        Debug.Log(newPos);
+
+        Vector2 finalPos = Vector2.zero;
+
+        //Debug.Log(newPos);
 
         if (direction == Vector2.down || direction == Vector2.up)
         {
-            float yAxis = ArtificialGrid.Instance.GetNextYPosition(ref newPos.y, direction); // Calcola bene lo spazio tra una cella e l'altra qui!
+            float yAxis = ArtificialGrid.Instance.GetNextYPosition(newPos.y, direction); // Problema ancora qui!
             finalPos = new Vector2(newPos.x, yAxis);
         }
 
         if (direction == Vector2.right || direction == Vector2.down)
         {
-            float xAxis = ArtificialGrid.Instance.GetNextXPosition(ref newPos.x, direction);
+            float xAxis = ArtificialGrid.Instance.GetNextXPosition(newPos.x, direction);
             finalPos = new Vector2(xAxis, newPos.y);
         }
 
-        rect.position = newPos;
+        rect.position = finalPos;
     }
 
     void SetCollisionVectors()

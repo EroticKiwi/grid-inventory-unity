@@ -96,6 +96,7 @@ public class SelectionCellGroup
 
     public Vector2 GetCellGroupPosition()
     {
+        //Debug.Log(cellGroup.GetCellGroupPosition());
         return cellGroup.GetCellGroupPosition();
     }
 
