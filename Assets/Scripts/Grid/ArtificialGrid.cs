@@ -279,10 +279,10 @@ public class ArtificialGrid : MonoBehaviour
 
         if (direction == Vector2.down)
         {
-            return y -= grid[0, 0].GetComponent<RectTransform>().sizeDelta.y / gridSpacingY;
+            return y -= grid[0, 0].GetComponent<RectTransform>().sizeDelta.y / gridSpacingY * 2.57f;
         }
 
-        return y += grid[0, 0].GetComponent<RectTransform>().sizeDelta.y / gridSpacingY;
+        return y += grid[0, 0].GetComponent<RectTransform>().sizeDelta.y / gridSpacingY * 2.57f;
     }
 
     public float GetNextXPosition(float x, Vector2 direction)
@@ -290,10 +290,10 @@ public class ArtificialGrid : MonoBehaviour
 
         if (direction == Vector2.left)
         {
-            return x -= grid[0, 0].GetComponent<RectTransform>().sizeDelta.x / gridSpacingX;
+            return x -= grid[0, 0].GetComponent<RectTransform>().sizeDelta.x / gridSpacingX * 2.57f;
         }
 
-        return x += grid[0, 0].GetComponent<RectTransform>().sizeDelta.x / gridSpacingX;
+        return x += grid[0, 0].GetComponent<RectTransform>().sizeDelta.x / gridSpacingX * 2.57f;
     }
 
     public List<GameObject> CheckForCollisions(Vector2 startPos, Vector2 endPos)

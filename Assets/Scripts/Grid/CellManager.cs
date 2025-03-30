@@ -183,6 +183,9 @@ public class CellManager : MonoBehaviour
         currentCellGroup.UnFocusCellGroup_KeepLayer();
         Grid_Item item = currentCellGroup.GetItem();
         selectionGO.SetSelection(item, currentCellGroup.GetCellGroupSize(), currentCellGroup.GetCellGroupPositions());
+
+        checkColliderObj.SetInitialCheckCollider(currentCellGroup.GetCellGroupSize(), currentCellGroup.GetCellGroupPosition());
+        
         currentCellGroup.DisableIcon();
     }
 
@@ -255,13 +258,11 @@ public class CellManager : MonoBehaviour
     GameObject CheckForCellGroup(Vector2 direction)
     {
         // 1 - Prendi l'oggetto Check Collider;
-        // 2 - Modifica la grandezza del Check Collider per matcharla a quella del go della cellGroup;
-        checkColliderObj.SetSize(currentCellGroup.GetCellGroupSize());
-        // 3 - Sposta nella direzione in cui si vuole andare di una cella o riga;
+        // 2 - Sposta nella direzione in cui si vuole andare di una cella o riga;
         checkColliderObj.SetPosition(currentCellGroup.GetCellGroupPosition(), direction); // Problema, capisci bene come funzionano le coordinate
-        // 4 - Controlla che il numero di celle coperte sia uguale al numero di celle necessarie da coprire, altrimenti return NULL;
-        // 5 - Sposta cellGO di cellGroup nella posizione del Check Collider
-        // 6 - Sposta i cursor[] attivi di selectedGO nelle posizioni delle celle appena coperte
+        // 3 - Controlla che il numero di celle coperte sia uguale al numero di celle necessarie da coprire, altrimenti return NULL;
+        // 4 - Sposta cellGO di cellGroup nella posizione del Check Collider
+        // 5 - Sposta i cursor[] attivi di selectedGO nelle posizioni delle celle appena coperte
         return null;
     }
 

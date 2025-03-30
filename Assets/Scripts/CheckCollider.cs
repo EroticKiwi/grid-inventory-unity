@@ -32,11 +32,22 @@ public class CheckCollider
         return objs;
     }
 
-    public void SetSize(Vector2 newSize)
+    public void SetSize(Vector2 newSize) // Potremmo usare anche solo il numero di celle piuttosto che la grandezza dell'immagine, forse è meglio
     {
         rect.sizeDelta = newSize;
         Debug.Log(rect.sizeDelta);
         SetCollisionVectors();
+    }
+
+    public void SetInitialCheckCollider(Vector2 newSize, Vector2 newPos)
+    {
+        SetSize(newSize);
+        SetInitialPosition(newPos);
+    }
+
+    void SetInitialPosition(Vector2 newPos)
+    {
+        rect.localPosition = newPos;
     }
 
     public void SetPosition(Vector2 newPos, Vector2 direction) {
@@ -47,17 +58,17 @@ public class CheckCollider
 
         if (direction == Vector2.down || direction == Vector2.up)
         {
-            float yAxis = ArtificialGrid.Instance.GetNextYPosition(newPos.y, direction); // Problema ancora qui!
+            float yAxis = ArtificialGrid.Instance.GetNextYPosition(newPos.y, direction); // Problema ancora qui! La y ora è troppo corta
             finalPos = new Vector2(newPos.x, yAxis);
         }
 
-        if (direction == Vector2.right || direction == Vector2.down)
+        if (direction == Vector2.left || direction == Vector2.right)
         {
             float xAxis = ArtificialGrid.Instance.GetNextXPosition(newPos.x, direction);
             finalPos = new Vector2(xAxis, newPos.y);
         }
 
-        rect.position = finalPos;
+        rect.localPosition = finalPos;
     }
 
     void SetCollisionVectors()
