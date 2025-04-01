@@ -194,7 +194,7 @@ public class CellManager : MonoBehaviour
         Grid_Item tempItem = currentCellGroup.GetItem();
         currentCellGroup.FillCell(selectionGO.storedItem);
         currentCellGroup.DisableIcon();
-        selectionGO.SetItem(tempItem);
+        selectionGO.SetItem(tempItem, currentCellGroup.GetNumberOfOccupiedCells());
     }
 
     void SelectCell_Single()
@@ -206,7 +206,7 @@ public class CellManager : MonoBehaviour
         }
 
         currentCellGroup.UnFocusCell();
-        selectionGO.SetItem(currentCellGroup.SelectCell());
+        selectionGO.SetItem(currentCellGroup.SelectCell(), currentCellGroup.GetNumberOfOccupiedCells());
         selectionGO.SetPosition(currentCellGroup.GetCellTransform().position);
         BackupCellGroup();
         currentCellGroup.EmptyCells();
@@ -261,6 +261,10 @@ public class CellManager : MonoBehaviour
         // 2 - Sposta nella direzione in cui si vuole andare di una cella o riga;
         checkColliderObj.SetPosition(currentCellGroup.GetCellGroupPosition(), direction); // Problema, capisci bene come funzionano le coordinate
         // 3 - Controlla che il numero di celle coperte sia uguale al numero di celle necessarie da coprire, altrimenti return NULL;
+        if (checkColliderObj.GetNumberOfColliders() < selectionGO.GetNumberOfOccupiedCells())
+        {
+            return null;
+        }
         // 4 - Sposta cellGO di cellGroup nella posizione del Check Collider
         // 5 - Sposta i cursor[] attivi di selectedGO nelle posizioni delle celle appena coperte
         return null;

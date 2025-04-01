@@ -12,11 +12,13 @@ public class SelectionGO
     public List<Image> icon;
     public Grid_Item storedItem;
     public Vector2 cellGroupSize;
+    public int occupiedCells;
 
     public SelectionGO(List<GameObject> gos)
     {
         cursors = gos;
         GetImagesMultiple();
+        occupiedCells = 1;
     }
 
     public SelectionGO(GameObject go)
@@ -26,13 +28,14 @@ public class SelectionGO
         GetImagesSingle();
     }
 
-    public void SetItem(Grid_Item item)
+    public void SetItem(Grid_Item item, int occupiedCells)
     {
         DisableAllCursors();
         storedItem = item;
         icon[0].sprite = storedItem.itemSprite;
         icon[0].gameObject.SetActive(true);
         cursors[0].SetActive(true);
+        this.occupiedCells = occupiedCells;
     }
 
     public void SetSelection(Grid_Item item, Vector2 size, List<Vector2> positions)
@@ -53,6 +56,11 @@ public class SelectionGO
 
         SetSize(size);
         DisableIcons();
+    }
+
+    public int GetNumberOfOccupiedCells()
+    {
+        return occupiedCells;
     }
 
     void SetSize(Vector2 size)

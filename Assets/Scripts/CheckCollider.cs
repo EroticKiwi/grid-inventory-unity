@@ -69,6 +69,8 @@ public class CheckCollider
         }
 
         rect.localPosition = finalPos;
+
+        UpdateCollisions();
     }
 
     void SetCollisionVectors()
@@ -79,9 +81,24 @@ public class CheckCollider
         endPos = corners[0];
     }
 
-    public void UpdateCollisions()
+    void UpdateCollisions()
     {
         SetCollisionVectors();
         CheckCollision();
+    }
+
+    public int GetNumberOfColliders()
+    {
+        return colliders.Count;
+    }
+
+    public bool CheckConditions(int cellsOccupied)
+    {
+        if (colliders.Count < cellsOccupied)
+        {
+            return false;
+        }
+
+        return true;
     }
 }

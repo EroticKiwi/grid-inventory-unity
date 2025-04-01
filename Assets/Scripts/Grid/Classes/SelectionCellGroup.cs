@@ -151,6 +151,11 @@ public class SelectionCellGroup
         return cellGroup.GetCellGroupSize();
     }
 
+    public int GetNumberOfOccupiedCells()
+    {
+        return cellGroup.GetNumberOfOccupiedCells();
+    }
+
     public void FillCell(Grid_Item item)
     {
         isEmpty = false;
