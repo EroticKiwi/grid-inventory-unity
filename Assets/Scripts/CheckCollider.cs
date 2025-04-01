@@ -73,6 +73,11 @@ public class CheckCollider
         UpdateCollisions();
     }
 
+    public Vector2 GetPosition()
+    {
+        return rect.localPosition;
+    }
+
     void SetCollisionVectors()
     {
         Vector3[] corners = new Vector3[4];

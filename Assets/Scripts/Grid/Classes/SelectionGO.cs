@@ -12,6 +12,7 @@ public class SelectionGO
     public List<Image> icon;
     public Grid_Item storedItem;
     public Vector2 cellGroupSize;
+    public GameObject cellGO;
     public int occupiedCells;
 
     public SelectionGO(List<GameObject> gos)
@@ -28,24 +29,17 @@ public class SelectionGO
         GetImagesSingle();
     }
 
-    public void SetItem(Grid_Item item, int occupiedCells)
+    public void SetItem(Grid_Item item)
     {
         DisableAllCursors();
         storedItem = item;
         icon[0].sprite = storedItem.itemSprite;
         icon[0].gameObject.SetActive(true);
         cursors[0].SetActive(true);
-        this.occupiedCells = occupiedCells;
+        occupiedCells = 1;
     }
 
-    public void SetSelection(Grid_Item item, Vector2 size, List<Vector2> positions)
-    {
-        CheckIfEnoughCursors(positions.Count);
-        SetItems(item, size);
-        SetPosition(positions);
-    }
-
-    public void SetItems(Grid_Item item, Vector2 size)
+    public void SetItems(Grid_Item item, Vector2 size, GameObject cellGO)
     {
         for (int i = 0; i < cursors.Count; i++)
         {
@@ -56,6 +50,13 @@ public class SelectionGO
 
         SetSize(size);
         DisableIcons();
+    }
+
+    public void SetSelection(Grid_Item item, Vector2 size, List<Vector2> positions, GameObject cellGO)
+    {
+        CheckIfEnoughCursors(positions.Count);
+        SetItems(item, size, cellGO);
+        SetPosition(positions);
     }
 
     public int GetNumberOfOccupiedCells()
@@ -86,6 +87,12 @@ public class SelectionGO
         }
     }
 
+    public void SetCellGOPosition(Vector2 newPos)
+    {
+        Rect rect = cellGO.GetComponent<Rect>();
+        rect.position = newPos;
+    }
+
     void CheckIfEnoughCursors(int neededCursors)
     {
         if (cursors.Count < neededCursors)
@@ -100,6 +107,8 @@ public class SelectionGO
                 count++;
             }
         }
+
+        occupiedCells = neededCursors;
 
         // LogAllIcons();
     }

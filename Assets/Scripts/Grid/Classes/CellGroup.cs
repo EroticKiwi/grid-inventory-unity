@@ -183,6 +183,11 @@ public class CellGroup // Ogni volta che abbiamo un elemento che occupa più cell
         return cellGO_size;
     }
 
+    public GameObject GetCellGO()
+    {
+        return cellGO;
+    }
+
     public int GetNumberOfOccupiedCells()
     {
         return cells.Count;

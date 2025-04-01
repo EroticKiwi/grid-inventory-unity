@@ -151,6 +151,11 @@ public class SelectionCellGroup
         return cellGroup.GetCellGroupSize();
     }
 
+    public GameObject GetCellGroupGO()
+    {
+        return cellGroup.GetCellGO();
+    }
+
     public int GetNumberOfOccupiedCells()
     {
         return cellGroup.GetNumberOfOccupiedCells();
