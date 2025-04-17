@@ -312,7 +312,7 @@ public class ArtificialGrid : MonoBehaviour
             if(isInsideX && isInsideY)
             {
                 collisions.Add(cell);
-                //Debug.Log("Collides with: " + cell.name);
+                // Debug.Log("Collides with: " + cell.name);
             }
         }
 

@@ -153,6 +153,7 @@ public class SelectionCellGroup
 
     public GameObject GetCellGroupGO()
     {
+        Debug.Log(cellGroup.GetCellGO().name);
         return cellGroup.GetCellGO();
     }
 
@@ -186,7 +187,7 @@ public class SelectionCellGroup
         cellGroup.EmptyCells();
     }
 
-    bool IsSingleCell()
+    public bool IsSingleCell()
     {
         if (cell == null)
         {

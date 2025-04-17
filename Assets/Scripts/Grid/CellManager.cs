@@ -124,6 +124,7 @@ public class CellManager : MonoBehaviour
         currentCellGroup.AssignCell(cell);
         currentCellGroup.AssignCellGroup(null);
         currentCellGroup.FocusCell(color);
+
         if (isSelecting)
         {
             currentCellGroup.DisableIcon();
@@ -156,15 +157,27 @@ public class CellManager : MonoBehaviour
 
         if (currentCellGroup.isEmpty)
         {
-            currentCellGroup.FillCell(selectionGO.storedItem);
-            currentCellGroup.FocusCell(true);
-            selectionGO.Empty();
-            isSelecting = false;
+            PlaceSelection();
             return;
         }
 
         SwapCells();
         //isSelecting = false;
+    }
+
+    void SelectCell_Single()
+    {
+        if (selectionGO == null)
+        {
+            GameObject go = Instantiate(selectionGO_prefab, GameObject.FindWithTag("InventoryGrid").transform);
+            selectionGO = new SelectionGO(go);
+        }
+
+        currentCellGroup.UnFocusCell();
+        selectionGO.SetItem(currentCellGroup.SelectCell());
+        selectionGO.SetPosition(currentCellGroup.GetCellTransform().position);
+        BackupCellGroup();
+        currentCellGroup.EmptyCells();
     }
 
     void SelectCell_Multiple()
@@ -185,8 +198,16 @@ public class CellManager : MonoBehaviour
         selectionGO.SetSelection(item, currentCellGroup.GetCellGroupSize(), currentCellGroup.GetCellGroupPositions(), currentCellGroup.GetCellGroupGO());
 
         checkColliderObj.SetInitialCheckCollider(currentCellGroup.GetCellGroupSize(), currentCellGroup.GetCellGroupPosition());
-        
+
         currentCellGroup.DisableIcon();
+    }
+
+    void PlaceSelection()
+    {
+        currentCellGroup.FillCell(selectionGO.storedItem);
+        currentCellGroup.FocusCell(true);
+        selectionGO.Empty();
+        isSelecting = false;
     }
 
     void SwapCells()
@@ -195,21 +216,6 @@ public class CellManager : MonoBehaviour
         currentCellGroup.FillCell(selectionGO.storedItem);
         currentCellGroup.DisableIcon();
         selectionGO.SetItem(tempItem);
-    }
-
-    void SelectCell_Single()
-    {
-        if (selectionGO == null)
-        {
-            GameObject go = Instantiate(selectionGO_prefab, GameObject.FindWithTag("InventoryGrid").transform);
-            selectionGO = new SelectionGO(go);
-        }
-
-        currentCellGroup.UnFocusCell();
-        selectionGO.SetItem(currentCellGroup.SelectCell());
-        selectionGO.SetPosition(currentCellGroup.GetCellTransform().position);
-        BackupCellGroup();
-        currentCellGroup.EmptyCells();
     }
 
     void BackupCellGroup()
@@ -231,15 +237,17 @@ public class CellManager : MonoBehaviour
     GameObject CheckForCell(Vector2 direction)
     {
         Vector2 position = Vector2.zero;
-        CellGroup cellGroup = currentCellGroup.GetCellGroup();
-        if (cellGroup != null)
+        if (!currentCellGroup.IsSingleCell())
         {
+
             if (isSelecting)
             {
                 GameObject go;
                 go = CheckForCellGroup(direction);
                 return go;
             }
+
+            CellGroup cellGroup = currentCellGroup.GetCellGroup();
             position = cellGroup.cells[0].transform.position;
         }
         else
@@ -248,10 +256,12 @@ public class CellManager : MonoBehaviour
         }
 
         RaycastHit2D hit = Physics2D.Raycast(position, direction);
+
         if (hit.transform == null)
         {
             return null;
         }
+
         return hit.transform.gameObject;
     }
 
@@ -268,7 +278,9 @@ public class CellManager : MonoBehaviour
         }
 
         // 4 - Sposta cellGO di cellGroup nella posizione del Check Collider
-        selectionGO.SetCellGOPosition(checkColliderObj.GetPosition());
+        GameObject cellGO = selectionGO.GetCellGO();
+        Rect rect = cellGO.GetComponent<Rect>();
+        selectionGO.SetCellGOPosition(checkColliderObj.GetPosition(), rect);
 
         // 5 - Sposta i cursor[] attivi di selectedGO nelle posizioni delle celle appena coperte
         

@@ -50,6 +50,7 @@ public class SelectionGO
 
         SetSize(size);
         DisableIcons();
+        this.cellGO = cellGO;
     }
 
     public void SetSelection(Grid_Item item, Vector2 size, List<Vector2> positions, GameObject cellGO)
@@ -87,9 +88,8 @@ public class SelectionGO
         }
     }
 
-    public void SetCellGOPosition(Vector2 newPos)
+    public void SetCellGOPosition(Vector2 newPos, Rect rect)
     {
-        Rect rect = cellGO.GetComponent<Rect>();
         rect.position = newPos;
     }
 
@@ -169,5 +169,10 @@ public class SelectionGO
         {
             go.SetActive(false);
         }
+    }
+
+    public GameObject GetCellGO()
+    {
+        return cellGO;
     }
 }

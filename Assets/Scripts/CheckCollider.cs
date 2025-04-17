@@ -35,7 +35,7 @@ public class CheckCollider
     public void SetSize(Vector2 newSize) // Potremmo usare anche solo il numero di celle piuttosto che la grandezza dell'immagine, forse è meglio
     {
         rect.sizeDelta = newSize;
-        Debug.Log(rect.sizeDelta);
+        //Debug.Log(rect.sizeDelta);
         SetCollisionVectors();
     }
 
