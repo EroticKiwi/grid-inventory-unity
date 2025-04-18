@@ -26,7 +26,7 @@ public class CellManager : MonoBehaviour
     public Grid_Item firstCellItemDebug;
     public Grid_Item secondCellItemDebug;
 
-    [Tooltip("When pressing ESC while an item is selected, chooses wheter the highlighted item grid should be the old one or the one the cursor is currently on.")]
+    [Tooltip("If checked does so when ESC is pressed when an item is selected, the currentCell becomes the original cell of the item.")]
     public bool onCancel_highlightOldItem = true;
     
     private void Awake()
@@ -71,7 +71,7 @@ public class CellManager : MonoBehaviour
 
         if (hit == null && !isSelecting)
         {
-            Debug.Log("null");
+            //Debug.Log("NO CELL DETECTED");
             return;
         }
 

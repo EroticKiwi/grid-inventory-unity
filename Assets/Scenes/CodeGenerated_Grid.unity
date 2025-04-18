@@ -731,6 +731,7 @@ MonoBehaviour:
   prefab: {fileID: 0}
   firstCellItemDebug: {fileID: 11400000, guid: b3a5ef57b76dc5040b3426da8f408781, type: 2}
   secondCellItemDebug: {fileID: 11400000, guid: 35185eb390f44cb42a7b363a0aeb67e6, type: 2}
+  onCancel_highlightOldItem: 1
 --- !u!1 &1783037669
 GameObject:
   m_ObjectHideFlags: 0
