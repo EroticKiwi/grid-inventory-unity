@@ -58,7 +58,7 @@ public class GridCell : MonoBehaviour
     public void FillCell(Grid_Item newItem)
     {
         item = newItem;
-        icon.sprite = newItem.itemSprite;
+        icon.sprite = item.itemSprite;
         icon.color = Color.white;
         occupied = true;
         icon.gameObject.SetActive(true);

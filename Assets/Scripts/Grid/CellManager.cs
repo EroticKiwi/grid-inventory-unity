@@ -26,6 +26,9 @@ public class CellManager : MonoBehaviour
     public Grid_Item firstCellItemDebug;
     public Grid_Item secondCellItemDebug;
 
+    [Tooltip("When pressing ESC while an item is selected, chooses wheter the highlighted item grid should be the old one or the one the cursor is currently on.")]
+    public bool onCancel_highlightOldItem = true;
+    
     private void Awake()
     {
         InstantiateCellGroups();
@@ -65,7 +68,8 @@ public class CellManager : MonoBehaviour
     public void NextCell(Vector2 direction)
     {
         GameObject hit = CheckForCell(direction);
-        if (hit == null)
+
+        if (hit == null && !isSelecting)
         {
             Debug.Log("null");
             return;
@@ -75,8 +79,11 @@ public class CellManager : MonoBehaviour
 
         AssignPreviousCells();
         DisablePreviousCells();
-        AssignCurrentCells(hit);
-        
+        if (hit != null)
+        {
+            AssignCurrentCells(hit);
+        }
+
         // DebugLog_CurrentCellGroup();
     }
 
@@ -163,6 +170,32 @@ public class CellManager : MonoBehaviour
 
         SwapCells();
         //isSelecting = false;
+    }
+
+    public void Cancel_Input()
+    {
+        if (!isSelecting)
+        {
+            return;
+        }
+
+        if (!selectionGO.isSelectingMultiCell)
+        {
+            backupCellGroup.FillCell(selectionGO.storedItem);
+            selectionGO.Empty();
+
+            currentCellGroup.EnableIcon();
+
+            if (onCancel_highlightOldItem)
+            {
+                currentCellGroup.UnFocusCell();
+                currentCellGroup.AssignCell(backupCellGroup.GetCell());
+            }
+
+            currentCellGroup.FocusCell(true);
+        }
+
+        isSelecting = false;
     }
 
     void SelectCell_Single()
@@ -279,12 +312,14 @@ public class CellManager : MonoBehaviour
 
         // 4 - Sposta cellGO di cellGroup nella posizione del Check Collider
         GameObject cellGO = selectionGO.GetCellGO();
-        Rect rect = cellGO.GetComponent<Rect>();
+        RectTransform rect = cellGO.GetComponent<RectTransform>();
         selectionGO.SetCellGOPosition(checkColliderObj.GetPosition(), rect);
 
         // 5 - Sposta i cursor[] attivi di selectedGO nelle posizioni delle celle appena coperte
-        
-        
+        GameObject[] coveredCells = checkColliderObj.CheckCells();
+        selectionGO.SetPosition(checkColliderObj.CheckCellsPosition());
+
+        // 6 - Ritorna la prima cella occupata dall'immagine
         return null;
     }
 

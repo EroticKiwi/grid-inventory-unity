@@ -14,6 +14,7 @@ public class SelectionGO
     public Vector2 cellGroupSize;
     public GameObject cellGO;
     public int occupiedCells;
+    public bool isSelectingMultiCell = false;
 
     public SelectionGO(List<GameObject> gos)
     {
@@ -29,7 +30,7 @@ public class SelectionGO
         GetImagesSingle();
     }
 
-    public void SetItem(Grid_Item item)
+    public void SetItem(Grid_Item item) // Called on SingleCells
     {
         DisableAllCursors();
         storedItem = item;
@@ -37,9 +38,10 @@ public class SelectionGO
         icon[0].gameObject.SetActive(true);
         cursors[0].SetActive(true);
         occupiedCells = 1;
+        isSelectingMultiCell = false;
     }
 
-    public void SetItems(Grid_Item item, Vector2 size, GameObject cellGO)
+    public void SetItems(Grid_Item item, Vector2 size, GameObject cellGO) // Called on MultiCells
     {
         for (int i = 0; i < cursors.Count; i++)
         {
@@ -51,6 +53,7 @@ public class SelectionGO
         SetSize(size);
         DisableIcons();
         this.cellGO = cellGO;
+        isSelectingMultiCell = true;
     }
 
     public void SetSelection(Grid_Item item, Vector2 size, List<Vector2> positions, GameObject cellGO)
@@ -88,7 +91,7 @@ public class SelectionGO
         }
     }
 
-    public void SetCellGOPosition(Vector2 newPos, Rect rect)
+    public void SetCellGOPosition(Vector2 newPos, RectTransform rect)
     {
         rect.position = newPos;
     }
@@ -111,6 +114,19 @@ public class SelectionGO
         occupiedCells = neededCursors;
 
         // LogAllIcons();
+    }
+
+    public GameObject CheckUnderCursor(int index)
+    {
+        if (index < 0 || index >= cursors.Count)
+        {
+            return null;
+        }
+        Vector3[] corners = new Vector3[4];
+        cursors[index].transform.GetComponent<RectTransform>().GetWorldCorners(corners);
+        Vector2 startPos = corners[2];
+        Vector2 endPos = corners[0];
+        return ArtificialGrid.Instance.CheckForCollisions(startPos, endPos)[0];
     }
 
     void LogAllIcons()

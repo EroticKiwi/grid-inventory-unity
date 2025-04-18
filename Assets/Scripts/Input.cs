@@ -12,6 +12,7 @@ public class Input : MonoBehaviour
     bool hasPressed_horizontal = false;
     bool hasPressed_vertical = false;
     bool hasPressed_selected = false;
+    bool hasPressed_cancel = false;
 
     private void Start()
     {
@@ -29,6 +30,7 @@ public class Input : MonoBehaviour
         MoveHorizontal(_controls.Movement.Horizontal.ReadValue<float>());
         MoveVertical(_controls.Movement.Vertical.ReadValue<float>());
         Select(_controls.Movement.Select.ReadValue<float>());
+        Cancel(_controls.Movement.Cancel.ReadValue<float>());
     }
 
     void MoveHorizontal(float direction)
@@ -87,6 +89,21 @@ public class Input : MonoBehaviour
         {
             _cellManager.SelectCells_Input();
             hasPressed_selected = true;
+        }
+    }
+
+    void Cancel(float pressed)
+    {
+        if (pressed == 0)
+        {
+            hasPressed_cancel = false;
+            return;
+        }
+
+        if (pressed == 1 && !hasPressed_cancel)
+        {
+            _cellManager.Cancel_Input();
+            hasPressed_cancel = true;
         }
     }
 }

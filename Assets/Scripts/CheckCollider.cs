@@ -27,9 +27,21 @@ public class CheckCollider
         GameObject[] objs = new GameObject[colliders.Count];
         for (int i = 0; i < colliders.Count; i++)
         {
-            objs[i] = colliders[i].gameObject;
+            objs[i] = colliders[i];
         }
         return objs;
+    }
+
+    public List<Vector2> CheckCellsPosition()
+    {
+        List<Vector2> positions = new List<Vector2>();
+
+        for (int i = 0; i < colliders.Count; i++)
+        {
+            positions.Add(colliders[i].transform.position);
+        }
+
+        return positions;
     }
 
     public void SetSize(Vector2 newSize) // Potremmo usare anche solo il numero di celle piuttosto che la grandezza dell'immagine, forse è meglio
@@ -58,7 +70,7 @@ public class CheckCollider
 
         if (direction == Vector2.down || direction == Vector2.up)
         {
-            float yAxis = ArtificialGrid.Instance.GetNextYPosition(newPos.y, direction); // Problema ancora qui! La y ora è troppo corta
+            float yAxis = ArtificialGrid.Instance.GetNextYPosition(newPos.y, direction);
             finalPos = new Vector2(newPos.x, yAxis);
         }
 
@@ -75,7 +87,7 @@ public class CheckCollider
 
     public Vector2 GetPosition()
     {
-        return rect.localPosition;
+        return rect.position;
     }
 
     void SetCollisionVectors()
