@@ -12,6 +12,7 @@ public class CellManager : MonoBehaviour
     
 
     bool isSelecting = false;
+    bool isSelectingGroup = false;
 
     public SelectionGO selectionGO;
     public GameObject selectionGO_prefab;
@@ -69,7 +70,7 @@ public class CellManager : MonoBehaviour
     {
         GameObject hit = CheckForCell(direction);
 
-        if (hit == null && !isSelecting)
+        if (hit == null && !isSelectingGroup)
         {
             //Debug.Log("NO CELL DETECTED");
             return;
@@ -96,52 +97,57 @@ public class CellManager : MonoBehaviour
 
     void DisablePreviousCells()
     {
-        if (previousCellGroup.GetCell() != null)
+        if (previousCellGroup.GetCellGroup() != null)
         {
-            previousCellGroup.UnFocusCell();
+            previousCellGroup.UnFocusCellGroup();
             return;
         }
 
-        previousCellGroup.UnFocusCellGroup();
+        previousCellGroup.UnFocusCell();
     }
 
     void AssignCurrentCells(GameObject hit)
     {
         bool color = true;
-        GridCell cell = hit.GetComponent<GridCell>();
+        GridCell cell = hit.GetComponent<GridCell>(); // cell --> currentHit;
 
-        if (isSelecting)
+        if (isSelecting || isSelectingGroup) // General changes for when an item is being selected
         {
             color = false;
         }
 
-        if (cell != null && cell.isPartOfCellGroup)
+        if (cell != null && cell.isPartOfCellGroup) // Multicell specific code
         {
-            currentCellGroup.AssignCell(null);
+            currentCellGroup.AssignCell(cell);
             currentCellGroup.AssignCellGroup(cell.owner);
             currentCellGroup.FocusCellGroup(color);
             if (isSelecting)
             {
-                currentCellGroup.DisableIcon();
-                //selectionGO.SetPosition(); // Position to occupy
+                currentCellGroup.CellGroup_BecomeTransparent();
+                selectionGO.SetPosition(currentCellGroup.GetCellTransform().position);
+                currentCellGroup.CellGroup_StopIgnoringRaycast();
+                currentCellGroup.Cell_IgnoreRaycast();
             }
             return;
         }
 
+        // Singlecell specific code
         currentCellGroup.AssignCell(cell);
         currentCellGroup.AssignCellGroup(null);
         currentCellGroup.FocusCell(color);
 
         if (isSelecting)
         {
-            currentCellGroup.DisableIcon();
             selectionGO.SetPosition(currentCellGroup.GetCellTransform().position);
+            currentCellGroup.DisableIcon();
         }
+
+        previousCellGroup.CellGroup_StopTransparent();
     }
 
     public void SelectCells_Input()
     {
-        if (!isSelecting) // Is NOW selecting
+        if (!isSelecting && !isSelectingGroup) // Is NOW selecting
         {
             GridCell cell = currentCellGroup.GetCell();
             if (cell != null && currentCellGroup.isEmpty)
@@ -158,7 +164,6 @@ public class CellManager : MonoBehaviour
                 SelectCell_Multiple();
             }
 
-            isSelecting = true;
             return;
         }
 
@@ -169,7 +174,8 @@ public class CellManager : MonoBehaviour
         }
 
         SwapCells();
-        //isSelecting = false;
+        isSelecting = false;
+        isSelectingGroup = false;
     }
 
     public void Cancel_Input()
@@ -196,6 +202,7 @@ public class CellManager : MonoBehaviour
         }
 
         isSelecting = false;
+        isSelectingGroup = false;
     }
 
     void SelectCell_Single()
@@ -211,6 +218,7 @@ public class CellManager : MonoBehaviour
         selectionGO.SetPosition(currentCellGroup.GetCellTransform().position);
         BackupCellGroup();
         currentCellGroup.EmptyCells();
+        isSelecting = true;
     }
 
     void SelectCell_Multiple()
@@ -224,6 +232,7 @@ public class CellManager : MonoBehaviour
                 gos.Add(ArtificialGrid.Instance.InstantiateSelectionGO());
             }
             selectionGO = new SelectionGO(gos);
+            isSelectingGroup = true;
         }
 
         currentCellGroup.UnFocusCellGroup_KeepLayer();
@@ -270,10 +279,9 @@ public class CellManager : MonoBehaviour
     GameObject CheckForCell(Vector2 direction)
     {
         Vector2 position = Vector2.zero;
-        if (!currentCellGroup.IsSingleCell())
+        if (!currentCellGroup.IsSingleCell() && !isSelecting)
         {
-
-            if (isSelecting)
+            if (isSelectingGroup)
             {
                 GameObject go;
                 go = CheckForCellGroup(direction);

@@ -13,6 +13,7 @@ public class CellGroup // Ogni volta che abbiamo un elemento che occupa più cell
     public Image icon;
     public Grid_Item item;
     public Vector2 cellGO_size;
+    public CanvasGroup canvasGroup;
 
     public CellGroup() { }
 
@@ -44,6 +45,7 @@ public class CellGroup // Ogni volta che abbiamo un elemento che occupa più cell
         this.cellGO = cellGO;
         margins = cellGO.transform.Find("margins").GetComponent<Image>();
         icon = cellGO.transform.Find("icon").GetComponent<Image>();
+        canvasGroup = cellGO.GetComponent<CanvasGroup>();
     }
 
     public void AddCell(GridCell cell, Tuple<int, int> cellCoords)
@@ -156,6 +158,16 @@ public class CellGroup // Ogni volta che abbiamo un elemento che occupa più cell
             cell.EnableIcon();
         }
         icon.gameObject.SetActive(true);
+    }
+
+    public void BecomeTransparent()
+    {
+        canvasGroup.alpha = 0.2f;
+    }
+
+    public void StopTransparent()
+    {
+        canvasGroup.alpha = 1f;
     }
 
     public void SetImage(Sprite sprite)

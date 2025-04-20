@@ -270,7 +270,7 @@ public class ArtificialGrid : MonoBehaviour
 
     public GameObject InstantiateSelectionGO()
     {
-        GameObject go = Instantiate(_cellManager.selectionGO_prefab, GameObject.FindWithTag("InventoryGrid").transform);
+        GameObject go = Instantiate(_cellManager.selectionGO_prefab, GameObject.FindWithTag("SelectionGOHolder").transform);
         return go;
     }
 

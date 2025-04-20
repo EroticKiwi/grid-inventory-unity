@@ -49,6 +49,11 @@ public class SelectionCellGroup
         cell.UnFocus();
     }
 
+    public void Cell_IgnoreRaycast()
+    {
+        cell.IgnoreRaycast();
+    }
+
     public GridCell GetCell()
     {
         return cell;
@@ -77,6 +82,30 @@ public class SelectionCellGroup
     public  void UnFocusCellGroup_KeepLayer()
     {
         cellGroup.UnFocus_KeepLayer();
+    }
+
+    public void CellGroup_StopIgnoringRaycast()
+    {
+        cellGroup.StopIgnoringRaycast();
+    }
+
+    public void CellGroup_IgnoreRaycast()
+    {
+        cellGroup.IgnoreRaycast();
+    }
+
+    public void CellGroup_BecomeTransparent()
+    {
+        cellGroup.BecomeTransparent();
+    }
+
+    public void CellGroup_StopTransparent()
+    {
+        if (cellGroup == null)
+        {
+            return;
+        }
+        cellGroup.StopTransparent();
     }
 
     public CellGroup GetCellGroup()

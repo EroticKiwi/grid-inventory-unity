@@ -97,12 +97,22 @@ public class GridCell : MonoBehaviour
         {
             margins.color = Color.green;
         }
+        IgnoreRaycast();
+    }
+
+    public void IgnoreRaycast()
+    {
         gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
     }
 
     public void UnFocus()
     {
         margins.color = Color.white;
+        StopIgnoringRaycast();
+    }
+
+    public void StopIgnoringRaycast()
+    {
         gameObject.layer = LayerMask.NameToLayer("Default");
     }
 }
