@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -42,6 +43,11 @@ public class GridCell : MonoBehaviour
         this.icon.gameObject.SetActive(true);
     }
 
+    public void EmptyIcon()
+    {
+        this.icon.sprite = null;
+    }
+
     public Grid_Item GetItem()
     {
         return item;
@@ -64,10 +70,19 @@ public class GridCell : MonoBehaviour
         icon.gameObject.SetActive(true);
     }
 
+    public void FillCell_NoIcon(Grid_Item newItem)
+    {
+        item = newItem;
+        icon.color = Color.black;
+        occupied = true;
+        icon.gameObject.SetActive(true);
+    }
+
     public void AddToCellGroup(CellGroup cellGroup)
     {
         isPartOfCellGroup = true;
         owner = cellGroup;
+        EmptyIcon();
     }
 
     public void RemoveFromCellGroup()

@@ -125,7 +125,7 @@ public class CellGroup // Ogni volta che abbiamo un elemento che occupa più cell
     {
         foreach (GridCell cell in cells)
         {
-            cell.FillCell(item);
+            cell.FillCell_NoIcon(item);
         }
         SetImage(item.itemSprite);
     }
