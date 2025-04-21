@@ -729,6 +729,9 @@ MonoBehaviour:
   cellPrefab: {fileID: 4440761502362672821, guid: 1d83b191f9462ad4cb5dfe35df575dc9, type: 3}
   gridParent: {fileID: 1161315569}
   imageParent: {fileID: 1783037670}
+  selectionGO_Holder: {fileID: 0}
+  imagesHolder_index: 0
+  imagesHolder: {fileID: 0}
   gridRows: 3
   gridCols: 3
   xStart: 207
@@ -779,7 +782,7 @@ GameObject:
   - component: {fileID: 1783037670}
   m_Layer: 5
   m_Name: Images
-  m_TagString: Untagged
+  m_TagString: ImagesHolder
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -218,7 +218,7 @@ public class SelectionCellGroup
 
     public bool IsSingleCell()
     {
-        if (cell == null)
+        if (cellGroup != null)
         {
             return false;
         }

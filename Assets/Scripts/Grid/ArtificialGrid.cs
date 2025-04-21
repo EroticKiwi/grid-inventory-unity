@@ -10,6 +10,10 @@ public class ArtificialGrid : MonoBehaviour
     public Transform gridParent;
     public Transform imageParent;
 
+    public Transform selectionGO_Holder;
+    public int imagesHolder_index;
+    public Transform imagesHolder;
+
     CellManager _cellManager;
 
     public GameObject[,] grid;
@@ -46,22 +50,30 @@ public class ArtificialGrid : MonoBehaviour
 
     private void Start()
     {
-        RectTransform gridRect = gridParent.GetComponent<RectTransform>();
-        xStart = transform.position.x - (transform.position.x / 2);
-        yStart = transform.position.y * 1.25f;
-        grid = new GameObject[gridRows,gridCols];
         SetCellSize();
         GenerateGrid();
     }
 
     void LoadResources()
     {
+
+        RectTransform gridRect = gridParent.GetComponent<RectTransform>();
+        xStart = transform.position.x - (transform.position.x / 2);
+        yStart = transform.position.y * 1.25f;
+        grid = new GameObject[gridRows, gridCols];
+
+        selectionGO_Holder = GameObject.FindWithTag("SelectionGOHolder").transform;
+        imagesHolder = GameObject.FindWithTag("ImagesHolder").transform;
+        imagesHolder_index = imagesHolder.GetSiblingIndex();
+
         inLineTwoCells = Resources.Load<GameObject>("Prefabs/MultiCells/InLineTwoCellsPrefab");
         inLineThreeCells = Resources.Load<GameObject>("Prefabs/MultiCells/InLineThreeCellsPrefab");
         if (inLineTwoCells == null || inLineTwoCells == null)
         {
             Debug.Log("Null!");
         }
+
+
     }
 
     void GenerateGrid()
@@ -317,5 +329,16 @@ public class ArtificialGrid : MonoBehaviour
         }
 
         return collisions;
+    }
+
+    public void SetSelectionGO_OverImages()
+    {
+        int index = selectionGO_Holder.GetSiblingIndex();
+        imagesHolder.SetSiblingIndex(index);
+    }
+
+    public void SetImages_OverSelectionGO()
+    {
+        imagesHolder.SetSiblingIndex(imagesHolder_index);
     }
 }

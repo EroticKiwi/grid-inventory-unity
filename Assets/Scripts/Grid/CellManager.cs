@@ -150,12 +150,13 @@ public class CellManager : MonoBehaviour
         if (!isSelecting && !isSelectingGroup) // Is NOW selecting
         {
             GridCell cell = currentCellGroup.GetCell();
-            if (cell != null && currentCellGroup.isEmpty)
+
+            if (cell == null || currentCellGroup.isEmpty)
             {
                 return;
             }
 
-            if (cell != null)
+            if (currentCellGroup.IsSingleCell())
             {
                 SelectCell_Single();
             }
@@ -167,15 +168,18 @@ public class CellManager : MonoBehaviour
             return;
         }
 
-        if (currentCellGroup.isEmpty)
+        if (isSelecting)
         {
-            PlaceSelection();
-            return;
-        }
+            if (currentCellGroup.isEmpty)
+            {
+                PlaceSelection();
+                return;
+            }
 
-        SwapCells();
-        isSelecting = false;
-        isSelectingGroup = false;
+            SwapCells();
+            return;
+
+        }
     }
 
     public void Cancel_Input()
@@ -203,13 +207,16 @@ public class CellManager : MonoBehaviour
 
         isSelecting = false;
         isSelectingGroup = false;
+        ArtificialGrid.Instance.SetSelectionGO_OverImages();
     }
 
     void SelectCell_Single()
     {
+        ArtificialGrid.Instance.SetImages_OverSelectionGO();
+
         if (selectionGO == null)
         {
-            GameObject go = Instantiate(selectionGO_prefab, GameObject.FindWithTag("InventoryGrid").transform);
+            GameObject go = ArtificialGrid.Instance.InstantiateSelectionGO();
             selectionGO = new SelectionGO(go);
         }
 
@@ -250,6 +257,7 @@ public class CellManager : MonoBehaviour
         currentCellGroup.FocusCell(true);
         selectionGO.Empty();
         isSelecting = false;
+        ArtificialGrid.Instance.SetSelectionGO_OverImages();
     }
 
     void SwapCells()
